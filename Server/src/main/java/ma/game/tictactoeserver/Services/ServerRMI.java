@@ -14,6 +14,7 @@ public class ServerRMI {
         try {
             registry = LocateRegistry.createRegistry(port);
             registry.rebind("OnlinePlayers", new OnlinePlayers());
+
             return true;
         } catch (RemoteException e) {
             return false;
