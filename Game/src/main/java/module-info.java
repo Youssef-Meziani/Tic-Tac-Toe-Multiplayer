@@ -10,7 +10,10 @@ module ma.game.tictactoemultiplayer {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.rmi;
 
     opens ma.game.tictactoemultiplayer to javafx.fxml;
     exports ma.game.tictactoemultiplayer;
+    exports ma.game.tictactoemultiplayer.Controllers;
+    opens ma.game.tictactoemultiplayer.Controllers to javafx.fxml;
 }
