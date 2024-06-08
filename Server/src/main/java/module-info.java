@@ -10,7 +10,10 @@ module ma.game.tictactoeserver {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.rmi;
 
     opens ma.game.tictactoeserver to javafx.fxml;
     exports ma.game.tictactoeserver;
+    exports ma.game.tictactoeserver.Controllers;
+    opens ma.game.tictactoeserver.Controllers to javafx.fxml;
 }
