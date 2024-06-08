@@ -18,7 +18,6 @@ public class GlobalChatService extends UnicastRemoteObject implements IGlobalCha
     @Override
     public void sendGlobalMessage(Message message) throws RemoteException {
         globalMessages.add(message);
-        System.out.println("Global message from " + message.getSender() + ": " + message.getContent());
     }
 
     @Override
