@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.game.tictactoemultiplayer.Controllers.SignupController">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="14.0" prefHeight="20.0" prefWidth="100.0" text="Sign Up" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
+        <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" layoutX="150.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" />
+        <Label layoutX="49.0" layoutY="219.0" prefHeight="30.0" prefWidth="90.0" text="Username">
+            <font>
+                <Font size="14.0" />
+            </font></Label>
+        <Label layoutX="49.0" layoutY="277.0" prefHeight="30.0" prefWidth="90.0" text="Password">
+            <font>
+                <Font size="14.0" />
+            </font></Label>
+        <Button fx:id="signupBTN" layoutX="150.0" layoutY="390.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Sign Up" />
+        <TextField fx:id="username" layoutX="143.0" layoutY="220.0" prefHeight="30.0" prefWidth="200.0" />
+        <PasswordField fx:id="password" layoutX="143.0" layoutY="277.0" prefHeight="30.0" prefWidth="200.0" />
+        <PasswordField fx:id="passwordConfirmation" layoutX="143.0" layoutY="334.0" prefHeight="30.0" prefWidth="200.0" />
+        <Label alignment="CENTER_RIGHT" layoutX="124.0" layoutY="455.0" prefHeight="30.0" prefWidth="100.0" text="Already a user?" />
+        <Button fx:id="loginBTN" layoutX="224.0" layoutY="455.0" onAction="#goToLogIn" prefHeight="30.0" prefWidth="47.0" style="-fx-background-color: transparent;" text="Login" textFill="BLUE" />
+        <Label layoutX="49.0" layoutY="334.0" prefHeight="30.0" prefWidth="90.0" text="Confirmation">
+         <font>
+            <Font size="14.0" />
+         </font>
+        </Label>
+    </children>
+</AnchorPane>
