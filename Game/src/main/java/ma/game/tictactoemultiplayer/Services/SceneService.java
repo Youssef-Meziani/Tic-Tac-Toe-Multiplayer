@@ -33,6 +33,7 @@ public class SceneService {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setTitle(title);
         stage.setScene(new Scene(root, width, height));
+        stage.centerOnScreen();
         stage.show();
     }
 }

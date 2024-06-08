@@ -2,7 +2,6 @@ module ma.game.tictactoemultiplayer {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
-
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -16,4 +15,7 @@ module ma.game.tictactoemultiplayer {
     exports ma.game.tictactoemultiplayer;
     exports ma.game.tictactoemultiplayer.Controllers;
     opens ma.game.tictactoemultiplayer.Controllers to javafx.fxml;
+    //opens javafx.scene to org.controlsfx.controls;
+    //opens ma.game.tictactoemultiplayer.Controllers to javafx.fxml, org.controlsfx.controls;
+
 }
