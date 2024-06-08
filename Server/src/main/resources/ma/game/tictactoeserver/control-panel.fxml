@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200" prefWidth="300" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.game.tictactoeserver.Controllers.ControlPanelController">
+   <children>
+       <ToggleButton fx:id="toggleButton" layoutX="90.0" layoutY="8.0" onAction="#handleToggleButtonAction" prefHeight="30.0" prefWidth="120.0" text="Stopped" textFill="RED">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></ToggleButton>
+      <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" layoutX="75.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
