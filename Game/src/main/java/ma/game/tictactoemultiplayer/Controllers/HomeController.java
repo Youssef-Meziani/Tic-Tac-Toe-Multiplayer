@@ -59,6 +59,8 @@ public class HomeController {
 
     private Timer messageRefreshTimer;
     private String movementCharacter;
+    private boolean gameStarted = false;
+    private Game currentGame;
 
     public HomeController(){
         initializeGlobalChatService();
@@ -84,7 +86,8 @@ public class HomeController {
     private void initializeGames(){
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 2002);
-            this.onlineGames = (IGames) registry.lookup("Games");
+            this.onlineGames = (Games) registry.lookup("Games");
+            System.out.println(onlineGames);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,6 +125,7 @@ public class HomeController {
                 try {
                     refreshMessages();
                     refreshUserCount();
+                    refreshGameInfo();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                     alertsService.showAlert("Error", "Failed to refresh messages. Please try again later.");
@@ -142,6 +146,13 @@ public class HomeController {
                 updateOnlineUsersCount();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
+            }
+        });
+    }
+    public void refreshGameInfo(){
+        Platform.runLater(() -> {
+            if (gameStarted && !currentGame.gameHasPlace()){
+                gameInfoLabel.setText("Game started");
             }
         });
     }
@@ -194,14 +205,17 @@ public class HomeController {
             if(game.gameHasPlace()){
                 game.registerPlayer(AuthenticatedUser.username);
                 foundGame = true;
+                gameStarted = true;
+                System.out.println("test");
                 movementCharacter = "O";
             }
         }
         if (!foundGame){
-            Game game = new Game();
-            game.registerPlayer(AuthenticatedUser.username);
-            onlineGames.createGame(game);
+            currentGame = new Game();
+            currentGame.registerPlayer(AuthenticatedUser.username);
+            onlineGames.createGame(currentGame);
             movementCharacter = "X";
+            gameInfoLabel.setText("Looking for the second player, please wait!");
         }
 
     }

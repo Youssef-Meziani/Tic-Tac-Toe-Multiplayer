@@ -15,7 +15,7 @@ public class Game extends Games implements Serializable, IGame {
 
     @Override
     public synchronized boolean gameHasPlace() {
-        return gamePlayers.size() == 1;
+        return gamePlayers.size() < 2;
     }
 
     @Override

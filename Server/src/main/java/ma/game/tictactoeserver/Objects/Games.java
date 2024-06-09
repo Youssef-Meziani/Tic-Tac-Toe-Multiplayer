@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Games extends UnicastRemoteObject implements IGames, Serializable {
+public class Games implements IGames, Serializable {
 
     private ArrayList<Game> games;
 
@@ -17,11 +17,9 @@ public class Games extends UnicastRemoteObject implements IGames, Serializable {
     @Override
     public synchronized void createGame(Game game) throws RemoteException {
         games.add(game);
-    }
 
-    @Override
-    public synchronized Game getGame(Game game) throws RemoteException {
-        return games.getLast().getGame(game);
+        System.out.println("haha");
+        System.out.println(games);
     }
 
     @Override
