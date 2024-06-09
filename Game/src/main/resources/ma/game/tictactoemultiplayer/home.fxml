@@ -1,32 +1,208 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.game.tictactoemultiplayer.Controllers.HomeController">
    <children>
-      <SplitPane dividerPositions="0.6" prefHeight="600.0" prefWidth="1000.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <TabPane layoutX="-3.0" prefHeight="600.0" prefWidth="403.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Global Chat">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                      <Tab text="Private Chat">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                    </tabs>
-                  </TabPane>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+      <AnchorPane fx:id="menu" prefHeight="600.0" prefWidth="600.0">
+          <children>
+              <Button fx:id="oneVsBotBTN" layoutX="200.0" layoutY="295.0" mnemonicParsing="false" onAction="#startGameVsAI" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #ffc107;" text="1 VS AI">
+                  <font>
+                      <Font name="System Bold" size="18.0" />
+                  </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+              <Button fx:id="logoutBTN" layoutX="200.0" layoutY="525.0" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #ffc107;" text="Logout">
+                  <font>
+                      <Font size="18.0" />
+                  </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+              </Button>
+              <Separator layoutX="118.0" layoutY="494.0" prefHeight="4.0" prefWidth="364.0" />
+              <Button disable="true" layoutX="200.0" layoutY="397.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #ffc107;" text="Tournament">
+                  <font>
+                      <Font name="System Bold" size="18.0" />
+                  </font>
+              </Button>
+              <Label layoutX="264.0" layoutY="448.0" text="Coming Soon" />
+              <Button fx:id="oneVsOneBTN" layoutX="200.0" layoutY="191.0" mnemonicParsing="false" onAction="#startGameVsOne" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #ffc107;" text="1 VS 1">
+                  <font>
+                      <Font name="System Bold" size="18.0" />
+                  </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+              </Button>
+            <Label alignment="CENTER_RIGHT" layoutX="197.0" layoutY="35.0" prefHeight="26.0" prefWidth="136.0" text="Online Users :">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="197.0" layoutY="80.0" prefHeight="26.0" prefWidth="136.0" text="Matches Played :">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="197.0" layoutY="125.0" prefHeight="26.0" prefWidth="136.0" text="Matches Won :">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="onlineUsersCount" layoutX="343.0" layoutY="35.0" prefHeight="26.0" prefWidth="136.0" text="0" textFill="LIME">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="matchesPlayedCount" layoutX="343.0" layoutY="80.0" prefHeight="26.0" prefWidth="136.0" text="0" textFill="BLUE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="matchesWonCount" layoutX="343.0" layoutY="125.0" prefHeight="26.0" prefWidth="136.0" text="0" textFill="#dfc531">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+          </children>
+      </AnchorPane>
+      <AnchorPane fx:id="game" prefHeight="600.0" prefWidth="600.0" visible="false">
+          <children>
+              <FlowPane layoutX="75.0" layoutY="91.0" prefHeight="450.0" prefWidth="450.0">
+                  <children>
+                      <Button fx:id="btn1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6" text="X" textAlignment="CENTER">
+                     <font>
+                        <Font size="70.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                      <Button fx:id="btn2" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.7">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn3" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn4" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn5" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.7">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn6" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn7" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn8" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.7">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                      <Button fx:id="btn9" mnemonicParsing="false" prefHeight="149.6" prefWidth="149.6">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="70.0" />
+                     </font></Button>
+                  </children></FlowPane>
+              <Button fx:id="quitBTN" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #dfdfdf;" text="Quit" textFill="RED">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+              <Label fx:id="whoseTurnLabel" alignment="CENTER" layoutX="80.0" layoutY="30.0" prefHeight="27.0" prefWidth="440.0" text="Turn">
+                  <font>
+                      <Font name="System Bold" size="20.0" />
+                  </font>
+              </Label>
+          </children>
+      </AnchorPane>
+      <Separator layoutX="600.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="0.0" />
+      <TabPane layoutX="603.0" prefHeight="600.0" prefWidth="398.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="World Chat">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                      <VBox prefHeight="566.0" prefWidth="398.0" spacing="10">
+                          <ListView fx:id="worldChatListView" VBox.vgrow="ALWAYS" />
+                          <HBox spacing="10">
+                              <TextField fx:id="worldChatTextField" prefHeight="30.0" promptText="Enter message" HBox.hgrow="ALWAYS" />
+                              <Button onAction="#sendWorldMessage" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #ffc107;" text="Send">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor></Button>
+                          </HBox>
+                      </VBox>
+                  </children>
+              </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Private 1v1 Chat">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                      <VBox prefHeight="566.0" prefWidth="398.0" spacing="10">
+                          <ListView fx:id="privateChatListView" VBox.vgrow="ALWAYS" />
+                          <HBox spacing="10">
+                              <TextField fx:id="privateChatTextField" prefHeight="30.0" promptText="Enter message" HBox.hgrow="ALWAYS" />
+                              <Button onAction="#sendPrivateMessage" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #ffc107;" text="Send">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor></Button>
+                          </HBox>
+                      </VBox>
+                  </children>
+              </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

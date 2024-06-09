@@ -14,7 +14,7 @@ public class ControlPanelController {
 
     @FXML
     public void initialize() {
-        Image serverImage = new Image(getClass().getResourceAsStream("/images/server.png"));
+        Image serverImage = new Image(getClass().getResourceAsStream("/ServerImages/server.png"));
         imageView.setImage(serverImage);
     }
 
