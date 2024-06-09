@@ -1,6 +1,6 @@
 package ma.game.tictactoemultiplayer.Objects;
 
-import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
+import ma.game.tictactoemultiplayer.Interfaces.IOnlinePlayers;
 
 import java.io.Serializable;
 

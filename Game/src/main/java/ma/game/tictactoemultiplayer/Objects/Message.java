@@ -1,7 +1,6 @@
 package ma.game.tictactoemultiplayer.Objects;
 
-import ma.game.tictactoeserver.Interfaces.IMessages;
-
+import ma.game.tictactoemultiplayer.Interfaces.IMessages;
 import java.io.Serializable;
 
 public class Message implements Serializable, IMessages {

@@ -1,8 +1,7 @@
 package ma.game.tictactoemultiplayer.Services;
 
-import ma.game.tictactoeserver.Interfaces.IGlobalChatService;
-import ma.game.tictactoeserver.Objects.Message;
-
+import ma.game.tictactoemultiplayer.Interfaces.IGlobalChatService;
+import ma.game.tictactoemultiplayer.Objects.Message;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
