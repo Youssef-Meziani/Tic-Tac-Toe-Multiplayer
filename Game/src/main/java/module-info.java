@@ -10,6 +10,7 @@ module ma.game.tictactoemultiplayer {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.rmi;
+    requires ma.game.tictactoeserver;
 
     opens ma.game.tictactoemultiplayer to javafx.fxml;
     exports ma.game.tictactoemultiplayer;
