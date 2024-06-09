@@ -10,15 +10,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 import ma.game.tictactoemultiplayer.Services.GameService;
-import ma.game.tictactoeserver.Interfaces.IGame;
-import ma.game.tictactoeserver.Interfaces.IUserService;
+import ma.game.tictactoeserver.Interfaces.*;
+
 import java.rmi.Naming;
 import ma.game.tictactoemultiplayer.Objects.AuthenticatedUser;
 import ma.game.tictactoemultiplayer.Services.AlertsService;
 import ma.game.tictactoemultiplayer.Services.SceneService;
 import ma.game.tictactoemultiplayer.Services.TextService;
-import ma.game.tictactoeserver.Interfaces.IGlobalChatService;
-import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
+import ma.game.tictactoeserver.Objects.Game;
+import ma.game.tictactoeserver.Objects.Games;
 import ma.game.tictactoeserver.Objects.Message;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -49,7 +49,7 @@ public class HomeController {
 
     private boolean isAI;
 
-    private IGame onlineGame;
+    private IGames onlineGames;
 
     private IGlobalChatService globalChatService;
 
@@ -58,10 +58,12 @@ public class HomeController {
     private IOnlinePlayers onlinePlayers;
 
     private Timer messageRefreshTimer;
+    private String movementCharacter;
 
     public HomeController(){
         initializeGlobalChatService();
         initializeOnlinePlayers();
+        initializeGames();
         this.alertsService = new AlertsService();
         this.messageRefreshTimer = new Timer();
 
@@ -76,14 +78,17 @@ public class HomeController {
 
         buttons = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
 
+
+    }
+
+    private void initializeGames(){
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 2002);
-            this.onlineGame = (IGame) registry.lookup("Game");
+            this.onlineGames = (IGames) registry.lookup("Games");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     private void initializeOnlinePlayers() {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 2002);
@@ -177,18 +182,28 @@ public class HomeController {
     }
     
     @FXML
-    public void startGameVsOne(ActionEvent event) {
+    public void startGameVsOne(ActionEvent event) throws RemoteException {
         isAI = false;
         GameService.clearBoardButtonsContent(buttons);
         disableBoard();
         togglePanes();
         //todo : start looking for other players, if found proceed
-        onlineGame.registerPlayer("ttt");
-        if (onlineGame.isPlayerAvailableFor1vs1()) {
-            enableBoard();
-        } else {
-            gameInfoLabel.setText("Looking for the second player, please wait!");
+        boolean foundGame = false;
+        for (Game game: onlineGames.getGames()
+             ) {
+            if(game.gameHasPlace()){
+                game.registerPlayer(AuthenticatedUser.username);
+                foundGame = true;
+                movementCharacter = "O";
+            }
         }
+        if (!foundGame){
+            Game game = new Game();
+            game.registerPlayer(AuthenticatedUser.username);
+            onlineGames.createGame(game);
+            movementCharacter = "X";
+        }
+
     }
 
     @FXML

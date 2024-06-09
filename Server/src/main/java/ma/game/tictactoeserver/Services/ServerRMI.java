@@ -1,10 +1,7 @@
 package ma.game.tictactoeserver.Services;
-import ma.game.tictactoeserver.Interfaces.IGame;
+import ma.game.tictactoeserver.Interfaces.*;
 import ma.game.tictactoeserver.Objects.Game;
-import ma.game.tictactoeserver.Interfaces.IGlobalChatService;
-import ma.game.tictactoeserver.Interfaces.IMessages;
-import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
-import ma.game.tictactoeserver.Interfaces.IUserService;
+import ma.game.tictactoeserver.Objects.Games;
 import ma.game.tictactoeserver.Objects.Message;
 import ma.game.tictactoeserver.Objects.OnlinePlayers;
 import java.rmi.RemoteException;
@@ -20,11 +17,11 @@ public class ServerRMI {
     public static boolean start() {
         try {
             IUserService userService = new UserService();
-            IGame game = new Game();
+            IGames games = new Games();
             IOnlinePlayers onlinePlayers = new OnlinePlayers();
             IGlobalChatService globalChatService = new GlobalChatService();
             registry = LocateRegistry.createRegistry(port);
-            registry.rebind("Game", game);
+            registry.rebind("Games", games);
             registry.rebind("UserService", userService);
             registry.rebind("OnlinePlayers", onlinePlayers);
             registry.rebind("GlobalChatService", globalChatService);
