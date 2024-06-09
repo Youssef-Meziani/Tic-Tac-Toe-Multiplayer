@@ -3,12 +3,12 @@ package ma.game.tictactoemultiplayer.Controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import ma.game.tictactoemultiplayer.Services.AlertsService;
 import ma.game.tictactoeserver.Interfaces.IUserService;
 import ma.game.tictactoeserver.Objects.User;
 import ma.game.tictactoemultiplayer.Services.SceneService;
@@ -31,15 +31,12 @@ public class SignupController {
 
     @FXML
     private PasswordField password, passwordConfirmation;
-
-    @FXML
-    private Button loginBTN, signupBTN;
-
     private ValidationSupport validationSupport = new ValidationSupport();
     private IUserService userService;
-
+    private AlertsService alertsService;
     public SignupController() {
         initializeUserService();
+        this.alertsService = new AlertsService();
     }
 
     private void initializeUserService() {
@@ -50,7 +47,7 @@ public class SignupController {
             System.out.println("Connected to UserService.");
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "Failed to connect to the user service. Please try again later.");
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
 
@@ -91,36 +88,28 @@ public class SignupController {
             String passConfirm = passwordConfirmation.getText();
 
             if (user_name.isEmpty() || pass_word.isEmpty() || passConfirm.isEmpty()) {
-                showAlert("Error", "Please fill in all fields.");
+                alertsService.showAlert("Error", "Please fill in all fields.");
                 return;
             }
 
             if (!pass_word.equals(passConfirm)) {
-                showAlert("Error", "Passwords do not match.");
+                alertsService.showAlert("Error", "Passwords do not match.");
                 return;
             }
 
             User newUser = new User(user_name, pass_word);
             userService.registerUser(newUser);
-            showAlert("Success", "User registered successfully.");
+            alertsService.showAlert("Success", "User registered successfully.");
 
             // Close the signup window
             Stage stage = (Stage) username.getScene().getWindow();
             stage.close();
 
             // Change to home scene
-            SceneService.changeScene(event, "home.fxml", "Tic Tac Toe", 1000, 600);
+            SceneService.changeScene(event, "signup.fxml", "Tic Tac Toe", 400, 500);
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "Failed to register user. Please try again.");
+            alertsService.showAlert("Error", "Failed to register user. Please try again.");
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

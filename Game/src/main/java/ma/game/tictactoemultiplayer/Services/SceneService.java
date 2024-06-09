@@ -12,7 +12,9 @@ import ma.game.tictactoemultiplayer.Controllers.HomeController;
 import java.io.IOException;
 
 public class SceneService {
-    public static void changeScene(ActionEvent event, String fxmlfile, String title, int width, int height){
+    private static HomeController homeController;
+
+    public static void changeScene(ActionEvent event, String fxmlfile, String title, int width, int height) {
         Parent root = null;
         try{
             root = FXMLLoader.load(Application.class.getResource(fxmlfile));
@@ -24,5 +26,9 @@ public class SceneService {
         stage.setScene(new Scene(root, width, height));
         stage.centerOnScreen();
         stage.show();
+    }
+
+    public static HomeController getHomeController() {
+        return homeController;
     }
 }

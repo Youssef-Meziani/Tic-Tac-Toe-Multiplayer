@@ -1,9 +1,10 @@
 package ma.game.tictactoeserver.Interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface IOnlinePlayers extends Remote {
-    static Long count = 0L;
-
-
+    void incrementCount() throws RemoteException;
+    void decrementCount() throws RemoteException;
+    int getCount() throws RemoteException;
 }
