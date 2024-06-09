@@ -16,7 +16,5 @@ module ma.game.tictactoemultiplayer {
     exports ma.game.tictactoemultiplayer;
     exports ma.game.tictactoemultiplayer.Controllers;
     opens ma.game.tictactoemultiplayer.Controllers to javafx.fxml;
-    //opens javafx.scene to org.controlsfx.controls;
-    //opens ma.game.tictactoemultiplayer.Controllers to javafx.fxml, org.controlsfx.controls;
 
 }

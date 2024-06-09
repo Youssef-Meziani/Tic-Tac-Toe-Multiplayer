@@ -11,6 +11,12 @@ import javafx.scene.text.TextAlignment;
 import ma.game.tictactoemultiplayer.Services.GameService;
 import ma.game.tictactoemultiplayer.Services.SceneService;
 import ma.game.tictactoemultiplayer.Services.TextService;
+import ma.game.tictactoeserver.Interfaces.IGame;
+import ma.game.tictactoeserver.Interfaces.IUserService;
+
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,8 +41,12 @@ public class HomeController {
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
     private ArrayList<Button> buttons;
+
     private Random random = new Random();
+
     private boolean isAI;
+
+    private IGame onlineGame;
 
     @FXML
     public void initialize() {
@@ -45,6 +55,13 @@ public class HomeController {
         game.setVisible(false);
 
         buttons = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
+
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
+            this.onlineGame = (IGame) registry.lookup("Game");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -56,8 +73,16 @@ public class HomeController {
     @FXML
     public void startGameVsOne(ActionEvent event) {
         isAI = false;
-        //todo : lgalo joueur disponible, o moraha afichilo lpartial dyal game
+        GameService.clearBoardButtonsContent(buttons);
+        disableBoard();
         togglePanes();
+        //todo : start looking for other players, if found proceed
+        onlineGame.registerPlayer("ttt");
+        if (onlineGame.isPlayerAvailableFor1vs1()) {
+            enableBoard();
+        } else {
+            gameInfoLabel.setText("Looking for the second player, please wait!");
+        }
     }
 
     @FXML

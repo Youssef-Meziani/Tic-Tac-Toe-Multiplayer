@@ -1,10 +1,7 @@
 package ma.game.tictactoemultiplayer.Services;
 
-import com.almasb.fxgl.core.fsm.State;
-import eu.hansolo.tilesfx.addons.Switch;
 import javafx.scene.control.Button;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameService {
     public static void clearBoardButtonsContent(ArrayList<Button> buttons){
