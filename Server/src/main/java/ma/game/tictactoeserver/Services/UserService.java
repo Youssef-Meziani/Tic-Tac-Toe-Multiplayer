@@ -2,6 +2,7 @@ package ma.game.tictactoeserver.Services;
 
 import ma.game.tictactoeserver.Interfaces.IUserService;
 import ma.game.tictactoeserver.Objects.Message;
+import ma.game.tictactoeserver.Objects.OnlinePlayers;
 import ma.game.tictactoeserver.Objects.User;
 
 import java.rmi.RemoteException;
@@ -31,7 +32,7 @@ public class UserService extends UnicastRemoteObject implements IUserService {
 
     @Override
     public synchronized boolean loginUser(String username, String password) throws RemoteException {
-        return users.stream().anyMatch(u -> u.getUsername().equals(username) && u.getPassword().equals(password));
+         return users.stream().anyMatch(u -> u.getUsername().equals(username) && u.getPassword().equals(password));
     }
 
     @Override

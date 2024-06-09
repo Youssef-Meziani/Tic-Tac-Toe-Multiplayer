@@ -2,8 +2,28 @@ package ma.game.tictactoeserver.Objects;
 
 import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
 
-import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class OnlinePlayers implements Serializable, IOnlinePlayers {
-    public static Long count = 0L;
+public class OnlinePlayers extends UnicastRemoteObject implements IOnlinePlayers {
+    private static int count = 0;
+
+    public OnlinePlayers() throws RemoteException {
+        super();
+    }
+
+    @Override
+    public synchronized void incrementCount() throws RemoteException {
+        count++;
+    }
+
+    @Override
+    public synchronized void decrementCount() throws RemoteException {
+        count--;
+    }
+
+    @Override
+    public int getCount() throws RemoteException {
+        return count;
+    }
 }

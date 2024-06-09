@@ -6,11 +6,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import ma.game.tictactoemultiplayer.Services.AlertsService;
 import ma.game.tictactoemultiplayer.Services.SceneService;
 import ma.game.tictactoemultiplayer.Services.TextService;
+import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
-import org.controlsfx.validation.Validator;
+import ma.game.tictactoeserver.Interfaces.IUserService;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class LoginController {
     private final int minLength = 5;
@@ -25,7 +30,26 @@ public class LoginController {
     private PasswordField password;
 
     private ValidationSupport validationSupport = new ValidationSupport();
+    private IUserService userService;
+    private IOnlinePlayers onlinePlayers;
 
+    private AlertsService alertsService;
+
+    public LoginController() {
+        initializeUserService();
+        this.alertsService = new AlertsService();
+    }
+
+    private void initializeUserService() {
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
+            this.userService = (IUserService) registry.lookup("UserService");
+            this.onlinePlayers = (IOnlinePlayers) registry.lookup("OnlinePlayers");
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
+        }
+    }
     @FXML
     public void initialize() {
         image.setImage(new Image(getClass().getResourceAsStream("/images/lock.png")));
@@ -43,8 +67,31 @@ public class LoginController {
     }
 
     @FXML
-    public void login(ActionEvent event){
-        // todo: traiter login, if all good run the next line :
-        SceneService.changeScene(event, "home.fxml", "Tic Tac Toe", 1000, 600);
+    public void login(ActionEvent event) {
+        String enteredUsername = username.getText();
+        String enteredPassword = password.getText();
+
+        try {
+            if (userService.loginUser(enteredUsername, enteredPassword)) {
+
+                alertsService.showAlert("Success", "Login successful.");
+                Stage stage = (Stage) username.getScene().getWindow();
+                stage.close();
+                SceneService.changeScene(event, "home.fxml", "Tic Tac Toe", 1000, 600);
+                onlinePlayers.incrementCount();
+                System.out.println(onlinePlayers.getCount());
+                HomeController homeController = SceneService.getHomeController();
+                if (homeController != null) {
+                    homeController.updateOnlineUsersCount(onlinePlayers.getCount());
+                }
+
+            } else {
+                alertsService.showAlert("Error", "Invalid username or password.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertsService.showAlert("Error", "Failed to authenticate user. Please try again.");
+        }
     }
+
 }
