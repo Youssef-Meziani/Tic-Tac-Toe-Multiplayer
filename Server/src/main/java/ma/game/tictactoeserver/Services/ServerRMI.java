@@ -14,6 +14,7 @@ public class ServerRMI {
     private static Registry registry;
     private static final int port = 2002;
 
+
     public static boolean start() {
         try {
             IUserService userService = new UserService();

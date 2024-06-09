@@ -15,11 +15,14 @@ public class OnlinePlayers extends UnicastRemoteObject implements IOnlinePlayers
     @Override
     public synchronized void incrementCount() throws RemoteException {
         count++;
+        System.out.println(getCount());
+
     }
 
     @Override
     public synchronized void decrementCount() throws RemoteException {
         count--;
+        System.out.println(getCount());
     }
 
     @Override

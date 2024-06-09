@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import ma.game.tictactoemultiplayer.Objects.AuthenticatedUser;
 import ma.game.tictactoemultiplayer.Services.AlertsService;
 import ma.game.tictactoemultiplayer.Services.SceneService;
 import ma.game.tictactoemultiplayer.Services.TextService;
@@ -37,6 +38,7 @@ public class LoginController {
 
     public LoginController() {
         initializeUserService();
+        initializeOnlinePlayers();
         this.alertsService = new AlertsService();
     }
 
@@ -44,6 +46,14 @@ public class LoginController {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.userService = (IUserService) registry.lookup("UserService");
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
+        }
+    }
+    private void initializeOnlinePlayers() {
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.onlinePlayers = (IOnlinePlayers) registry.lookup("OnlinePlayers");
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,21 +80,14 @@ public class LoginController {
     public void login(ActionEvent event) {
         String enteredUsername = username.getText();
         String enteredPassword = password.getText();
-
         try {
             if (userService.loginUser(enteredUsername, enteredPassword)) {
-
+                AuthenticatedUser.username = enteredUsername;
                 alertsService.showAlert("Success", "Login successful.");
                 Stage stage = (Stage) username.getScene().getWindow();
                 stage.close();
                 SceneService.changeScene(event, "home.fxml", "Tic Tac Toe", 1000, 600);
                 onlinePlayers.incrementCount();
-                System.out.println(onlinePlayers.getCount());
-                HomeController homeController = SceneService.getHomeController();
-                if (homeController != null) {
-                    homeController.updateOnlineUsersCount(onlinePlayers.getCount());
-                }
-
             } else {
                 alertsService.showAlert("Error", "Invalid username or password.");
             }

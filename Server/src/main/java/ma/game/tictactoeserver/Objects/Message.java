@@ -8,11 +8,13 @@ public class Message implements Serializable, IMessages {
     private String sender;
     private String receiver;
     private String content;
+    private String timeStamp;
 
-    public Message(String sender, String receiver, String content) {
+    public Message(String sender, String receiver, String content, String timeStamp) {
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
+        this.timeStamp = timeStamp;
     }
 
     public String getSender() {
@@ -25,5 +27,9 @@ public class Message implements Serializable, IMessages {
 
     public String getContent() {
         return content;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
     }
 }
