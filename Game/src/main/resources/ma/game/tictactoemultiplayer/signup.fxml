@@ -17,11 +17,13 @@
         <Label layoutX="49.0" layoutY="219.0" prefHeight="30.0" prefWidth="90.0" text="Username">
             <font>
                 <Font size="14.0" />
-            </font></Label>
+            </font>
+        </Label>
         <Label layoutX="49.0" layoutY="277.0" prefHeight="30.0" prefWidth="90.0" text="Password">
             <font>
                 <Font size="14.0" />
-            </font></Label>
+            </font>
+        </Label>
         <Button fx:id="signupBTN" layoutX="150.0" layoutY="390.0" mnemonicParsing="false" onAction="#signup" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #ffc107;" text="Sign Up">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -38,9 +40,9 @@
             <Cursor fx:constant="HAND" />
          </cursor></Button>
         <Label layoutX="49.0" layoutY="334.0" prefHeight="30.0" prefWidth="90.0" text="Confirmation">
-         <font>
-            <Font size="14.0" />
-         </font>
+            <font>
+                <Font size="14.0" />
+            </font>
         </Label>
     </children>
 </AnchorPane>

@@ -15,5 +15,8 @@ module ma.game.tictactoeserver {
     opens ma.game.tictactoeserver to javafx.fxml;
     exports ma.game.tictactoeserver;
     exports ma.game.tictactoeserver.Controllers;
+    exports ma.game.tictactoeserver.Interfaces;
+    exports ma.game.tictactoeserver.Objects;
+
     opens ma.game.tictactoeserver.Controllers to javafx.fxml;
 }

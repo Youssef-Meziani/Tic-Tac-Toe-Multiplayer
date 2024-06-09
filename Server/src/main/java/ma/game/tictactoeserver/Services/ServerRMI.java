@@ -1,7 +1,6 @@
 package ma.game.tictactoeserver.Services;
-import ma.game.tictactoeserver.Objects.OnlinePlayers;
+import ma.game.tictactoeserver.Interfaces.IUserService;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -12,11 +11,13 @@ public class ServerRMI {
 
     public static boolean start() {
         try {
+            IUserService userService = new UserService();
             registry = LocateRegistry.createRegistry(port);
-            registry.rebind("OnlinePlayers", new OnlinePlayers());
-
+            registry.rebind("UserService", userService);
+            System.out.println("UserService is bound to registry.");
             return true;
         } catch (RemoteException e) {
+            e.printStackTrace();
             return false;
         }
     }
