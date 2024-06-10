@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface IGames extends Remote {
-    void createGame(Game game) throws RemoteException;
-    void removeGame(Game game) throws RemoteException;
+    Game createGame(String username);
+    void removeGame(Game game);
     ArrayList<Game> getGames();
 }

@@ -6,10 +6,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game extends Games implements Serializable, IGame {
-    private List<String> gamePlayers;
+public class Game implements Serializable, IGame {
+    private ArrayList<String> gamePlayers;
 
-    public Game() throws RemoteException {
+    public Game() {
         gamePlayers = new ArrayList<>();
     }
 

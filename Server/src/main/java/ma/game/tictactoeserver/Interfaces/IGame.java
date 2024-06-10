@@ -1,6 +1,8 @@
 package ma.game.tictactoeserver.Interfaces;
 
-public interface IGame {
+import java.rmi.Remote;
+
+public interface IGame extends Remote {
     boolean gameHasPlace();
     void registerPlayer(String playerName);
     void unregisterPlayer(String playerName);}

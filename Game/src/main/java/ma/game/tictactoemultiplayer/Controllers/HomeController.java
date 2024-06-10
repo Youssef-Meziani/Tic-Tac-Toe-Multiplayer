@@ -43,6 +43,9 @@ public class HomeController {
     @FXML
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
+    @FXML
+    private Tab oneVsOneChatTab;
+
     private ArrayList<Button> buttons;
 
     private Random random = new Random();
@@ -61,14 +64,19 @@ public class HomeController {
     private String movementCharacter;
     private boolean gameStarted = false;
     private Game currentGame;
+    private Registry registry;
 
     public HomeController(){
+        try {
+            registry = LocateRegistry.getRegistry("localhost", 2002);
+        } catch (Exception e) {
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
+        }
         initializeGlobalChatService();
         initializeOnlinePlayers();
         initializeGames();
         this.alertsService = new AlertsService();
         this.messageRefreshTimer = new Timer();
-
     }
 
     @FXML
@@ -79,35 +87,27 @@ public class HomeController {
         game.setVisible(false);
 
         buttons = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
-
-
     }
 
     private void initializeGames(){
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
-            this.onlineGames = (Games) registry.lookup("Games");
-            System.out.println(onlineGames);
+            onlineGames = (IGames) registry.lookup("Games");
         } catch (Exception e) {
-            e.printStackTrace();
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
     private void initializeOnlinePlayers() {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.onlinePlayers = (IOnlinePlayers) registry.lookup("OnlinePlayers");
         } catch (Exception e) {
-            e.printStackTrace();
             alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
 
     private void initializeGlobalChatService() {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.globalChatService = (IGlobalChatService) registry.lookup("GlobalChatService");
         } catch (Exception e) {
-            e.printStackTrace();
             alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
@@ -198,24 +198,23 @@ public class HomeController {
         GameService.clearBoardButtonsContent(buttons);
         disableBoard();
         togglePanes();
-        //todo : start looking for other players, if found proceed
+        initializeGames();
         boolean foundGame = false;
-        for (Game game: onlineGames.getGames()
-             ) {
+        for (Game game: onlineGames.getGames()) {
             if(game.gameHasPlace()){
                 game.registerPlayer(AuthenticatedUser.username);
                 foundGame = true;
                 gameStarted = true;
-                System.out.println("test");
+                currentGame = game;
                 movementCharacter = "O";
+                break;
             }
         }
         if (!foundGame){
-            currentGame = new Game();
-            currentGame.registerPlayer(AuthenticatedUser.username);
-            onlineGames.createGame(currentGame);
+            currentGame = onlineGames.createGame(AuthenticatedUser.username);
             movementCharacter = "X";
             gameInfoLabel.setText("Looking for the second player, please wait!");
+
         }
 
     }
