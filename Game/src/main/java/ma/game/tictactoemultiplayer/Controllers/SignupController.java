@@ -101,12 +101,7 @@ public class SignupController {
             userService.registerUser(newUser);
             alertsService.showAlert("Success", "User registered successfully.");
 
-            // Close the signup window
-            Stage stage = (Stage) username.getScene().getWindow();
-            stage.close();
-
-            // Change to home scene
-            SceneService.changeScene(event, "signup.fxml", "Tic Tac Toe", 400, 500);
+            SceneService.changeScene(event, "login.fxml", "Tic Tac Toe", 400, 500);
         } catch (Exception e) {
             e.printStackTrace();
             alertsService.showAlert("Error", "Failed to register user. Please try again.");

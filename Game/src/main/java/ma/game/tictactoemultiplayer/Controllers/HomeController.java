@@ -10,15 +10,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 import ma.game.tictactoemultiplayer.Services.GameService;
-import ma.game.tictactoeserver.Interfaces.IGame;
-import ma.game.tictactoeserver.Interfaces.IUserService;
+import ma.game.tictactoeserver.Interfaces.*;
+
 import java.rmi.Naming;
 import ma.game.tictactoemultiplayer.Objects.AuthenticatedUser;
 import ma.game.tictactoemultiplayer.Services.AlertsService;
 import ma.game.tictactoemultiplayer.Services.SceneService;
 import ma.game.tictactoemultiplayer.Services.TextService;
-import ma.game.tictactoeserver.Interfaces.IGlobalChatService;
-import ma.game.tictactoeserver.Interfaces.IOnlinePlayers;
+import ma.game.tictactoeserver.Objects.Game;
+import ma.game.tictactoeserver.Objects.Games;
 import ma.game.tictactoeserver.Objects.Message;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -43,13 +43,16 @@ public class HomeController {
     @FXML
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
+    @FXML
+    private Tab oneVsOneChatTab;
+
     private ArrayList<Button> buttons;
 
     private Random random = new Random();
 
     private boolean isAI;
 
-    private IGame onlineGame;
+    private IGames onlineGames;
 
     private IGlobalChatService globalChatService;
 
@@ -58,13 +61,22 @@ public class HomeController {
     private IOnlinePlayers onlinePlayers;
 
     private Timer messageRefreshTimer;
+    private String movementCharacter;
+    private boolean gameStarted = false;
+    private Game currentGame;
+    private Registry registry;
 
     public HomeController(){
+        try {
+            registry = LocateRegistry.getRegistry("localhost", 2002);
+        } catch (Exception e) {
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
+        }
         initializeGlobalChatService();
         initializeOnlinePlayers();
+        initializeGames();
         this.alertsService = new AlertsService();
         this.messageRefreshTimer = new Timer();
-
     }
 
     @FXML
@@ -75,31 +87,27 @@ public class HomeController {
         game.setVisible(false);
 
         buttons = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
-
-        try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
-            this.onlineGame = (IGame) registry.lookup("Game");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
+    private void initializeGames(){
+        try {
+            onlineGames = (IGames) registry.lookup("Games");
+        } catch (Exception e) {
+            alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
+        }
+    }
     private void initializeOnlinePlayers() {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.onlinePlayers = (IOnlinePlayers) registry.lookup("OnlinePlayers");
         } catch (Exception e) {
-            e.printStackTrace();
             alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
 
     private void initializeGlobalChatService() {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 2002);
             this.globalChatService = (IGlobalChatService) registry.lookup("GlobalChatService");
         } catch (Exception e) {
-            e.printStackTrace();
             alertsService.showAlert("Error", "Failed to connect to the user service. Please try again later.");
         }
     }
@@ -117,6 +125,7 @@ public class HomeController {
                 try {
                     refreshMessages();
                     refreshUserCount();
+                    refreshGameInfo();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                     alertsService.showAlert("Error", "Failed to refresh messages. Please try again later.");
@@ -137,6 +146,13 @@ public class HomeController {
                 updateOnlineUsersCount();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
+            }
+        });
+    }
+    public void refreshGameInfo(){
+        Platform.runLater(() -> {
+            if (gameStarted && !currentGame.gameHasPlace()){
+                gameInfoLabel.setText("Game started");
             }
         });
     }
@@ -177,18 +193,30 @@ public class HomeController {
     }
     
     @FXML
-    public void startGameVsOne(ActionEvent event) {
+    public void startGameVsOne(ActionEvent event) throws RemoteException {
         isAI = false;
         GameService.clearBoardButtonsContent(buttons);
         disableBoard();
         togglePanes();
-        //todo : start looking for other players, if found proceed
-        onlineGame.registerPlayer("ttt");
-        if (onlineGame.isPlayerAvailableFor1vs1()) {
-            enableBoard();
-        } else {
-            gameInfoLabel.setText("Looking for the second player, please wait!");
+        initializeGames();
+        boolean foundGame = false;
+        for (Game game: onlineGames.getGames()) {
+            if(game.gameHasPlace()){
+                game.registerPlayer(AuthenticatedUser.username);
+                foundGame = true;
+                gameStarted = true;
+                currentGame = game;
+                movementCharacter = "O";
+                break;
+            }
         }
+        if (!foundGame){
+            currentGame = onlineGames.createGame(AuthenticatedUser.username);
+            movementCharacter = "X";
+            gameInfoLabel.setText("Looking for the second player, please wait!");
+
+        }
+
     }
 
     @FXML

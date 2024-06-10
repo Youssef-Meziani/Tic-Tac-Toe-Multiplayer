@@ -83,9 +83,6 @@ public class LoginController {
         try {
             if (userService.loginUser(enteredUsername, enteredPassword)) {
                 AuthenticatedUser.username = enteredUsername;
-                alertsService.showAlert("Success", "Login successful.");
-                Stage stage = (Stage) username.getScene().getWindow();
-                stage.close();
                 SceneService.changeScene(event, "home.fxml", "Tic Tac Toe", 1000, 600);
                 onlinePlayers.incrementCount();
             } else {

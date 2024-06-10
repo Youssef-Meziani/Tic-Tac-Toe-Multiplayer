@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Serializable, IGame {
-    private List<String> availablePlayers;
+    private ArrayList<String> gamePlayers;
 
-    public Game() throws RemoteException {
-        availablePlayers = new ArrayList<>();
+    public Game() {
+        gamePlayers = new ArrayList<>();
     }
 
     @Override
-    public synchronized boolean isPlayerAvailableFor1vs1() {
-        return availablePlayers.size() >= 2;
+    public synchronized boolean gameHasPlace() {
+        return gamePlayers.size() < 2;
     }
 
     @Override
     public synchronized void registerPlayer(String playerName) {
-        availablePlayers.add(playerName);
+        gamePlayers.add(playerName);
     }
 
     @Override
     public synchronized void unregisterPlayer(String playerName) {
-        availablePlayers.remove(playerName);
+        gamePlayers.remove(playerName);
     }
 }
